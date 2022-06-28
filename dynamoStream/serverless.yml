@@ -1,0 +1,32 @@
+service: dynamostream
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  dynamoStreamHandler:
+    handler: handler.dynamoStream
+    events:
+      - http:
+          path: dynamo-stream
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    preferenceTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: preferences-cmw-${self:provider.stage}
+      AttributeDefinitions:
+        - AttributeName: customerId
+          AttributeType: S
+        - AttributeName: customerId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: customerId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
