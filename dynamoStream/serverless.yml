@@ -5,6 +5,9 @@ frameworkVersion: "3"
 provider:
   name: aws
   runtime: nodejs14.x
+  stage: dev
+  region: us-east-1
+  stackName: tb-cmw-preferences-${self:provider.stage}
 
 functions:
   dynamoStreamHandler:
@@ -18,15 +21,15 @@ functions:
 resources:
   Resources:
     preferenceTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: preferences-cmw-${self:provider.stage}
-      AttributeDefinitions:
-        - AttributeName: customerId
-          AttributeType: S
-        - AttributeName: customerId
-          AttributeType: S
-      KeySchema:
-        - AttributeName: customerId
-          KeyType: HASH
-      BillingMode: PAY_PER_REQUEST
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: preferences-cmw-${self:provider.stage}
+        AttributeDefinitions:
+          - AttributeName: customerId
+            AttributeType: S
+          - AttributeName: preferenceState
+            AttributeType: S
+        KeySchema:
+          - AttributeName: customerId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
