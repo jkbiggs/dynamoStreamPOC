@@ -17,6 +17,38 @@ functions:
           path: dynamo-stream
           method: get
           cors: true
+  crudPreference:
+    handler: handlers.preference.main
+    timeout: 20
+    events:
+      - http:
+          path: api/preference/{preferenceId}
+          method: get
+          cors: true
+          request:
+            parameters:
+              paths:
+                preferenceId: true
+      - http:
+          path: api/preference/{preferenceId}
+          method: put
+          cors: true
+          request:
+            parameters:
+              paths:
+                preferenceId: true
+      - http:
+          path: api/preference
+          method: delete
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                id: true
+      - http:
+          path: api/preference
+          method: post
+          cors: true
 
 resources:
   Resources:
@@ -26,8 +58,6 @@ resources:
         TableName: preferences-cmw-${self:provider.stage}
         AttributeDefinitions:
           - AttributeName: customerId
-            AttributeType: S
-          - AttributeName: preferenceState
             AttributeType: S
         KeySchema:
           - AttributeName: customerId
